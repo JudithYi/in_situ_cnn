@@ -8,11 +8,10 @@
 #SBATCH -J life_science
 #
 # --- default case: use a single GPU on a shared node ---
-#SBATCH --cpus-per-task=18 --nodes=4 --ntasks-per-node=4 --time=03:00:00 -o ./async0.out.%j
+#SBATCH --cpus-per-task=18 --nodes=1 --ntasks-per-node=4 --constraint="gpu" --gres=gpu:a100:4 --time=03:00:00 --nvmps -o ./async0.out.%j 
 #SBATCH hetjob
 #
-#SBATCH --cpus-per-task=18 --nodes=1 --ntasks-per-node=4 --constraint="gpu" --gres=gpu:a100:4 --time=03:00:00 -o ./async1.out.%j 
-#SBATCH --nvmps
+#SBATCH --cpus-per-task=18 --nodes=1 --ntasks-per-node=4 --constraint="gpu" --gres=gpu:a100:4 --time=03:00:00 --nvmps -o ./async1.out.%j 
 
 #SBATCH --mail-type=none
 #SBATCH --mail-user=userid@example.com
@@ -36,5 +35,5 @@ module list
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 export OMP_PLACES=cores
 
-srun --het-group=0 python preprocess.py : --het-group=1 python train.py
+srun --het-group=0 ./preprocess_cpp 8 8 8 8 8 8 : --het-group=1 python train.py
 echo "job finished"
