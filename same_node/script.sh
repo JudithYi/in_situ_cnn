@@ -37,12 +37,10 @@ module load opencv/cpu/4.5.2
 module load mpi4py/3.0.3
 module list
 # module load vtune
-# export PYTHONPATH=/u/yju/.local/lib/python3.8/site-packages/:$PYTHONPATH
 export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 export OMP_PLACES=cores
 # Run the program:
 
 srun python in_situ_sync.py
-#srun hpcmd_suspend aps --stat-level=4 -r aps_result --  python pre_train_horovod.py
 
 echo "job finished"

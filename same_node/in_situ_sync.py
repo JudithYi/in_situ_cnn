@@ -100,15 +100,15 @@ class TimestampCallback(tf.keras.callbacks.Callback):
 nthread = 16
 NUM_TRAIN_IMG = 16
 NUM_PRE_IMG_PER_TRAIN_IMG = 50
-WIDTH = 128
-HEIGHT = 128
+width_in = 128
+height_in = 128
 CHANNEL = 1
 NUM_AUGMENTATION = 9
 
 # Define the function to preprocess each image
 def preprocess():
     labels =  [random.randint(0, 1) for _ in range(NUM_TRAIN_IMG)]
-    images = preprocess_srrf_mpi_test.process_SRRF_mpi(rank, size, nthread, NUM_TRAIN_IMG, NUM_PRE_IMG_PER_TRAIN_IMG, WIDTH, HEIGHT, files)
+    images = preprocess_srrf_mpi_test.process_SRRF_mpi(rank, size, nthread, NUM_TRAIN_IMG, NUM_PRE_IMG_PER_TRAIN_IMG, width_in, height_in, files)
     images = np.repeat(images, 3, axis=-1)
     
     return images, labels

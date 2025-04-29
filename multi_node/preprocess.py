@@ -37,7 +37,6 @@ WIDTH = 224
 HEIGHT = 224
 CHANNEL = 1
 
-
 GLOBAL_BATCH_SIZE = 64
 GLOBAL_TRAIN_SIZE = 19200
 NUM_ITER = GLOBAL_TRAIN_SIZE // GLOBAL_BATCH_SIZE
@@ -59,10 +58,13 @@ label_array = np.zeros(global_img_count, dtype=int)
 img_var = inIO.DefineVariable("image", img_array, [global_img_count, WIDTH, HEIGHT, CHANNEL], [write_start, 0, 0, 0], [local_img_count, WIDTH, HEIGHT, CHANNEL], adios2.ConstantDims)
 label_var = inIO.DefineVariable("label",label_array, [global_img_count], [write_start], [local_img_count], adios2.ConstantDims)
 
+width_in = 128
+height_in = 128
+
 EPOCHS = 2
 for i in range(EPOCHS):
     for j in range(NUM_ITER):
-        processed_img = preprocess_srrf_mpi_test.process_SRRF_mpi(rank, size, NTHREAD, NUM_TRAIN_IMG, NUM_PRE_IMG, WIDTH, HEIGHT, files)
+        processed_img = preprocess_srrf_mpi_test.process_SRRF_mpi(rank, size, NTHREAD, NUM_TRAIN_IMG, NUM_PRE_IMG, width_in, height_in, files)
         #processed_img = np.ones([NUM_TRAIN_IMG, 224, 224, 3])
         labels = np.random.randint(2, size = local_img_count) # TODO: currently randomly generate labels
         writer.BeginStep()
